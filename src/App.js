@@ -20,6 +20,8 @@ function App() {
 }
 
 function Clock() {
+  const utc = new Date().toUTCString();
+
   const date = new Date().toLocaleTimeString("en-US", {
     timeZone: "America/New_York",
     timeZoneName: "short",
@@ -44,7 +46,8 @@ function Clock() {
   return (
     <div>
       <h1>hello world!</h1>
-      <h2>EST: {date}</h2>
+      <h2>UTC: {utc}</h2>
+      {/* <h2>EST: {date}</h2> */}
       <h2>Central Time: {date2}</h2>
       <h2>Mountain Time: {date3}</h2>
       <h2>Pacific Time: {date2}</h2>
