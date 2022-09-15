@@ -22,7 +22,7 @@ function App() {
 //19:45:35 AM CDT
 
 function Clock() {
-  const test = new Date().parse();
+  // const test = new Date().parse();
 
   const utc = new Date().toUTCString();
 
@@ -47,18 +47,17 @@ function Clock() {
   })
   const now = new dayjs();
   const time = String(now);
+
   return (
     <div>
-      <h1>hello world! {test}</h1>
+      <h1>hello world!</h1>
       <h2>UTC: {utc}</h2>
-      {/* <h2>EST: {date}</h2> */}
+      <h2>EST: {date}</h2>
       <h2>Central Time: {date2}</h2>
       <h2>Mountain Time: {date3}</h2>
-      <h2>Pacific Time: {date2}</h2>
-      {/* <h1>Using the dayjs library...</h1> */}
-
-
-      <span>{time}</span>
+      <h2>Pacific Time: {date4}</h2>
+      <h1>Using the dayjs library...</h1>
+      <span>TIME: {time}</span>
       <p>{dayjs().format()}</p>
     </div>
   );
