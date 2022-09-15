@@ -11,6 +11,15 @@ dayjs.tz.setDefault("America/New_York");
 
 //https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
+//TESTCLICK FUNCTION
+async function testClick () {
+  console.log('testClick');
+  const response = await fetch('./api/')
+  const data = await response.json();
+  console.log(data);
+  // console.log(info);
+}
+
 function App() {
   return (
     <div>
@@ -51,6 +60,7 @@ function Clock() {
   return (
     <div>
       <h1>hello world!</h1>
+      <button onClick={testClick}>test</button>
       <h2>UTC: {utc}</h2>
       <h2>EST: {date}</h2>
       <h2>Central Time: {date2}</h2>
