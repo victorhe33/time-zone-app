@@ -25,6 +25,7 @@
     "@babel/preset-react": "^7.18.6",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
+    "mongosh": "^1.5.4",
     "nodemon": "^2.0.19",
     "style-loader": "^3.3.1",
     "webpack": "^5.74.0",
@@ -34,6 +35,8 @@
   "dependencies": {
     "dayjs": "^1.11.5",
     "express": "^4.18.1",
+    "mongoose": "^6.6.1",
+    "node-fetch": "^3.2.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
