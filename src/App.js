@@ -17,7 +17,22 @@ async function testClick () {
   const response = await fetch('./api/')
   const data = await response.json();
   console.log(data);
-  // console.log(info);
+}
+
+//ENTRYCLICK
+async function entryClick() {
+  console.log('entryClick');
+  const response = await fetch('./api/', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({name: "Victor"}),
+  })
+  const data = await response.json();
+  console.log(data);
+
 }
 
 function App() {
@@ -61,6 +76,7 @@ function Clock() {
     <div>
       <h1>hello world!</h1>
       <button onClick={testClick}>test</button>
+      <button onClick={entryClick}>entry</button>
       <h2>UTC: {utc}</h2>
       <h2>EST: {date}</h2>
       <h2>Central Time: {date2}</h2>
