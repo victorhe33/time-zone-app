@@ -33,16 +33,13 @@ timezoneController.getTimezones = async (req, res, next) => {
   }
 }
 
-
 //UPDATE
 timezoneController.updateTimezone = async (req, res, next) => {
   try {
     const { name } = req.body;
-    console.log(name);
     const filter = { name: "Victor" }
     const update = { name: name }
     const timezone = await Timezone.findOneAndUpdate(filter, update, { new: true });
-    console.log(timezone);
     res.locals.timezone = timezone;
     return next();
   } catch (err) {
@@ -56,7 +53,9 @@ timezoneController.updateTimezone = async (req, res, next) => {
 //DELETE
 timezoneController.deleteTimezone = async (req, res, next) => {
   try {
-    const timezone = await Timezone.find();
+    const deleteFilter = { name: req.params[0]}
+    console.log(deleteFilter)
+    const timezone = await Timezone.findOneAndDelete(deleteFilter);
     res.locals.timezone = timezone;
     return next();
   } catch (err) {

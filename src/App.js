@@ -55,6 +55,14 @@ async function updateClick() {
 //DELETECLICK FUNCTION
 async function deleteClick() {
   console.log('deleteClick');
+  const response = await fetch('./api/' + 'notVictor', {
+    method: "DELETE",
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  const data = await response.json();
+  console.log(data);
 }
 
 

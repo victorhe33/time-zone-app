@@ -20,7 +20,7 @@ router.patch('/', timezoneController.updateTimezone, (req, res) => {
 });
 
 //DELETE
-router.get('/', timezoneController.deleteTimezone, (req, res) => {
+router.delete('/*', timezoneController.deleteTimezone, (req, res) => {
   res.status(200).json(res.locals.timezone);
 });
 
