@@ -1,6 +1,7 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-const URI = 'mongodb+srv://victorhe33:qaSelo7Ej7Y9ntWT@cluster0.ugidgmi.mongodb.net/?retryWrites=true&w=majority';
+const URI = `mongodb+srv://victorhe33:${process.env.MONGOPASS}@cluster0.ugidgmi.mongodb.net/?retryWrites=true&w=majority`;
 
 mongoose.connect(URI, {
   dbName: "timezoneApp"
