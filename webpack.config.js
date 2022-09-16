@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -35,5 +36,10 @@ module.exports = {
     proxy: {
       "/api/": 'http://localhost:3000'
     }
-  }
+  },
+  // plugins: [
+  //   new HtmlWebpackPlugin({
+  //     template: path.resolve(__dirname, './dist/index.html')
+  //   })
+  // ],
 };

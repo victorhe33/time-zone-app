@@ -11,17 +11,11 @@ dayjs.tz.setDefault("America/New_York");
 
 //https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
-//TESTCLICK FUNCTION
-async function testClick () {
-  console.log('testClick');
-  const response = await fetch('./api/')
-  const data = await response.json();
-  console.log(data);
-}
+//CLICK HANDLERS
 
-//ENTRYCLICK
-async function entryClick() {
-  console.log('entryClick');
+//CREATECLICK
+async function createClick() {
+  console.log('createClick');
   const response = await fetch('./api/', {
     method: 'POST',
     headers: {
@@ -32,9 +26,39 @@ async function entryClick() {
   })
   const data = await response.json();
   console.log(data);
-
 }
 
+//READCLICK FUNCTION
+async function readClick() {
+  console.log('readClick');
+  const response = await fetch('./api/')
+  const data = await response.json();
+  console.log(data);
+}
+
+//UPDATECLICK FUNCTION
+async function updateClick() {
+  console.log('updateClick');
+  const response = await fetch('./api/', {
+    method: 'PATCH',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify({
+      name: 'notVictor',
+    })
+  });
+  const data = await response.json();
+  console.log(data);
+}
+
+//DELETECLICK FUNCTION
+async function deleteClick() {
+  console.log('deleteClick');
+}
+
+
+//REACT COMPONENT
 function App() {
   return (
     <div>
@@ -75,8 +99,10 @@ function Clock() {
   return (
     <div>
       <h1>hello world!</h1>
-      <button onClick={testClick}>test</button>
-      <button onClick={entryClick}>entry</button>
+      <button onClick={createClick}>create</button>
+      <button onClick={readClick}>read</button>
+      <button onClick={updateClick}>update</button>
+      <button onClick={deleteClick}>delete</button>
       <h2>UTC: {utc}</h2>
       <h2>EST: {date}</h2>
       <h2>Central Time: {date2}</h2>
