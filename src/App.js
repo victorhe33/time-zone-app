@@ -15,7 +15,7 @@ dayjs.tz.setDefault("America/New_York");
 //REACT COMPONENTS
 const App = () => {
   return (
-    <div>
+    <div class="app">
       <MiniClock/>
     </div>
   );
@@ -119,7 +119,7 @@ const MiniClock = () => {
   }
 
   return (
-    <div>
+    <div class="miniclock">
       <h1>hello world from miniClock!</h1>
 
       <select name="selectTime" id="selectTime">
@@ -203,7 +203,7 @@ function Timezone (props) {
   }
 
   return (
-    <div>
+    <div class="timezone">
       <h2>{props.location}: {time}</h2>
       <ul>
         {teamComponents}
