@@ -25,7 +25,6 @@ const App = () => {
 const MiniClock = () => {
   const [date, setDate] = useState(new Date());
   const [timezones, setTimezones] = useState([]);
-  const [ids, setIds] = useState([]);
 
   function tick() {
     setDate(new Date());
@@ -37,6 +36,8 @@ const MiniClock = () => {
       clearInterval(timerId);
     };
   }, []);
+
+  useEffect(() => readClick, []);
 
   //CREATE CLICK
   async function createClick() {
@@ -71,8 +72,9 @@ const MiniClock = () => {
 
     data.forEach(document => {
       newTimezones.push({ 
+        id: document._id,
         name: document.name,
-        id: document._id
+        team: document.team,
       });
     });
 
@@ -113,7 +115,7 @@ const MiniClock = () => {
   }
 
   for (let i = 0; i < timezones.length; i++) {
-    timeComponents.push(<Timezone date={date} location={timezones[i].name} key={i} id={timezones[i].id} updateClick={updateClick} deleteClick={deleteClick} />)
+    timeComponents.push(<Timezone date={date} id={timezones[i].id} location={timezones[i].name} key={i} team={timezones[i].team} updateClick={updateClick} deleteClick={deleteClick} />)
   }
 
   return (
@@ -141,7 +143,7 @@ const MiniClock = () => {
 
 //TIMEZONE COMPONENT
 function Timezone (props) {
-  const [team, setTeam] = useState([]);
+  const [team, setTeam] = useState(props.team);
 
   const time = props.date.toLocaleTimeString("en-US", {
     timeZone: props.location,
@@ -167,12 +169,37 @@ function Timezone (props) {
     const data = await response.json();
     console.log(data);
 
-
     setTeam(data.team);
   }
 
+  async function removeTeamClick (event, name) {
+    console.log('removeTeamClick');
+    const newTeam = [];
+    let once = true;
+    for (let teammate of team) {
+      if (teammate === name && once) {
+        once = false;
+      } else {
+        newTeam.push(teammate);
+      }
+    }
+    const response = await fetch(`./team/${props.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({
+        team: newTeam,
+      })
+    });
+    const data = await response.json();
+    console.log(data);
+
+    setTeam(data.team);
+  } 
+
   for (let i = 0; i < team.length; i++) {
-    teamComponents.push(<Team name={team[i]} key={`team${i}`} />)
+    teamComponents.push(<Team name={team[i]} key={`team${i}`} removeTeamClick={removeTeamClick} />)
   }
 
   return (
@@ -201,6 +228,7 @@ const Team = (props) => {
   return (
     <li>
       <span>{props.name}</span>
+      <button onClick={event => props.removeTeamClick(event, props.name)}>-</button>
     </li>
   );
 }
