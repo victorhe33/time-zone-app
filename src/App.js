@@ -11,39 +11,9 @@ dayjs.tz.setDefault("America/New_York");
 
 //https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
-//CLICK HANDLERS
 
-//UPDATECLICK FUNCTION
-async function updateClick() {
-  console.log('updateClick');
-  const response = await fetch('./api/', {
-    method: 'PATCH',
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-    body: JSON.stringify({
-      name: 'notVictor',
-    })
-  });
-  const data = await response.json();
-  console.log(data);
-}
-
-//DELETECLICK FUNCTION
-async function deleteClick() {
-  console.log('deleteClick');
-  const response = await fetch('./api/' + 'notVictor', {
-    method: "DELETE",
-    headers: {
-      'Content-type': 'application/json'
-    }
-  })
-  const data = await response.json();
-  console.log(data);
-}
-
-//REACT COMPONENT
-function App() {
+//REACT COMPONENTS
+const App = () => {
   return (
     <div>
       <MiniClock/>
@@ -51,10 +21,11 @@ function App() {
   );
 }
 
-//test case of using state to rerender re: time
+//MINICLOCK COMPONENT
 const MiniClock = () => {
   const [date, setDate] = useState(new Date());
   const [timezones, setTimezones] = useState([]);
+  const [ids, setIds] = useState([]);
 
   function tick() {
     setDate(new Date());
@@ -84,10 +55,12 @@ const MiniClock = () => {
 
   console.log(data);
   console.log('timezones', timezones);
+  readClick();
   }
 
   const newTimezones = [];
   const timeComponents = [];
+
 
   //READCLICK FUNCTION
   async function readClick() {
@@ -95,16 +68,52 @@ const MiniClock = () => {
     const response = await fetch('./api/')
     const data = await response.json();
     console.log(data);
-  
+
     data.forEach(document => {
-      newTimezones.push(document.name);
+      newTimezones.push({ 
+        name: document.name,
+        id: document._id
+      });
     });
 
     setTimezones(newTimezones);
   }
 
+  //UPDATECLICK FUNCTION
+  async function updateClick(event, id) {
+    console.log('updateClick');
+    const updatedName = document.getElementById(`update${id}`).value;
+    const response = await fetch(`./api/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({
+        name: updatedName,
+      })
+    });
+    const data = await response.json();
+    console.log(data);
+    readClick();
+  }
+  
+  //DELETECLICK FUNCTION
+  async function deleteClick(event, id) {
+    console.log('deleteClick');
+    console.log('event', event.target.id);
+    const response = await fetch('./api/' + event.target.id, {
+      method: "DELETE",
+      headers: {
+        'Content-type': 'application/json'
+      }
+    })
+    const data = await response.json();
+    console.log(data);
+    readClick();
+  }
+
   for (let i = 0; i < timezones.length; i++) {
-    timeComponents.push(<Timezone date={date} location={timezones[i]} key={i} />)
+    timeComponents.push(<Timezone date={date} location={timezones[i].name} key={i} id={timezones[i].id} updateClick={updateClick} deleteClick={deleteClick} />)
   }
 
   return (
@@ -116,6 +125,7 @@ const MiniClock = () => {
         <option value="US/Central">Central</option>
         <option value="US/Mountain">Mountain</option>
         <option value="US/Pacific">Pacific</option>
+        <option value="US/Hawaii">Hawaii</option>
       </select>
 
       <button onClick={createClick}>create</button>
@@ -129,6 +139,7 @@ const MiniClock = () => {
   )
 }
 
+//TIMEZONE COMPONENT
 function Timezone (props) {
   console.log(props)
   const time = props.date.toLocaleTimeString("en-US", {
@@ -139,8 +150,15 @@ function Timezone (props) {
   return (
     <div>
       <h2>{props.location}: {time}</h2>
-      <button onClick={updateClick}>update</button>
-      <button onClick={deleteClick}>delete</button>
+      <select name="selectUpdateTime" id={`update${props.id}`}>
+        <option value="US/Eastern">Eastern</option>
+        <option value="US/Central">Central</option>
+        <option value="US/Mountain">Mountain</option>
+        <option value="US/Pacific">Pacific</option>
+        <option value="US/Hawaii">Hawaii</option>
+      </select>
+      <button onClick={event => props.updateClick(event, props.id)}>update</button>
+      <button id={props.id} onClick={event => props.deleteClick(event, props.id)}>delete</button>
     </div>
   );
 }

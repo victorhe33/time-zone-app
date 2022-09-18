@@ -15,7 +15,7 @@ router.get('/', timezoneController.getTimezones, (req, res) => {
 });
 
 //UPDATE
-router.patch('/', timezoneController.updateTimezone, (req, res) => {
+router.patch('/*', timezoneController.updateTimezone, (req, res) => {
   res.status(200).json(res.locals.timezone);
 });
 
