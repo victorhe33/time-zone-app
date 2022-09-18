@@ -18,8 +18,7 @@ const timezoneSchema = new Schema({
     type: String,
     required: true
   },
-  timezone: String,
-  teammates: String,
+  team: [String],
 })
 
 const Timezone = mongoose.model('timezone', timezoneSchema);

@@ -4,6 +4,7 @@ const port = 3000;
 const path = require('path');
 
 const apiRouter = require('./routes/api');
+const teamRouter = require('./routes/team')
 
 //REQ BODY PARSER
 app.use(express.json());
@@ -15,6 +16,9 @@ app.get('/', (req, res) => {
 
 //API ROUTE HANDLER
 app.use('/api', apiRouter);
+
+//TEAM ROUTE HANDLER
+app.use('/team', teamRouter);
 
 //Catch-all route handler for requests to unknown paths.
 app.use((req, res) => {

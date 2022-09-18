@@ -36,7 +36,6 @@ timezoneController.getTimezones = async (req, res, next) => {
 //UPDATE
 timezoneController.updateTimezone = async (req, res, next) => {
   try {
-    console.log('patch attempt')
     const { name } = req.body;
     const filter = { _id: req.params[0] };
     const update = { name: name }

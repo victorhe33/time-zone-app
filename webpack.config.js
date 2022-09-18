@@ -34,7 +34,8 @@ module.exports = {
       directory: path.resolve(__dirname, './dist')
     },
     proxy: {
-      "/api/": 'http://localhost:3000'
+      "/api/": 'http://localhost:3000',
+      "/team/": 'http://localhost:3000'
     }
   },
   // plugins: [

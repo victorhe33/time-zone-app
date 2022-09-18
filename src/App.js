@@ -141,15 +141,46 @@ const MiniClock = () => {
 
 //TIMEZONE COMPONENT
 function Timezone (props) {
-  console.log(props)
+  const [team, setTeam] = useState([]);
+
   const time = props.date.toLocaleTimeString("en-US", {
     timeZone: props.location,
     timeZoneName: "short",
   });
 
+  const teamComponents = [];
+
+  //CLICK HANDERS
+  async function addTeamClick (event, id) {
+    console.log('addTeamClick');
+    const teamInputValue = document.getElementById(`teamInput${id}`).value;
+    const newTeam = [...team, teamInputValue];
+    const response = await fetch(`./team/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({
+        team: newTeam,
+      })
+    });
+    const data = await response.json();
+    console.log(data);
+
+
+    setTeam(data.team);
+  }
+
+  for (let i = 0; i < team.length; i++) {
+    teamComponents.push(<Team name={team[i]} key={`team${i}`} />)
+  }
+
   return (
     <div>
       <h2>{props.location}: {time}</h2>
+      <ul>
+        {teamComponents}
+      </ul>
       <select name="selectUpdateTime" id={`update${props.id}`}>
         <option value="US/Eastern">Eastern</option>
         <option value="US/Central">Central</option>
@@ -159,7 +190,18 @@ function Timezone (props) {
       </select>
       <button onClick={event => props.updateClick(event, props.id)}>update</button>
       <button id={props.id} onClick={event => props.deleteClick(event, props.id)}>delete</button>
+      <input id={`teamInput${props.id}`}></input>
+      <button onClick={event => addTeamClick(event, props.id)}>add</button>
     </div>
+  );
+}
+
+//TEAM COMPONENT
+const Team = (props) => {
+  return (
+    <li>
+      <span>{props.name}</span>
+    </li>
   );
 }
 
