@@ -15,7 +15,7 @@ dayjs.tz.setDefault("America/New_York");
 //REACT COMPONENTS
 const App = () => {
   return (
-    <div class="app">
+    <div className="h-full w-full flex bg-[url('./earth.jpg')] bg-cover">
       <MiniClock/>
     </div>
   );
@@ -119,26 +119,35 @@ const MiniClock = () => {
   }
 
   return (
-    <div class="miniclock">
-      <h1>hello world from miniClock!</h1>
+    <div className="w-full h-full flex flex-col items-center p-10 gap-10">
+      <div className="min-w-fit flex flex-col items-center gap-5 border-solid border border-gray-800 p-10 rounded-xl bg-slate-400 bg-opacity-20">
+        <div>
+          <h1 className="text-primary text-6xl font-mono font-semibold">{date.toLocaleTimeString()}</h1>
+        </div>
 
-      <select name="selectTime" id="selectTime">
-        <option value="US/Eastern">Eastern</option>
-        <option value="US/Central">Central</option>
-        <option value="US/Mountain">Mountain</option>
-        <option value="US/Pacific">Pacific</option>
-        <option value="US/Hawaii">Hawaii</option>
-      </select>
+        <div className="flex items-center gap-2">
+          <label className="inline uppercase tracking-wide text-gray-100 text-xs font-bold mb-1" for="selectTime">
+            Timezone:
+          </label>
+          <select name="selectTime" id="selectTime" className="inline appearance-none bg-gray-200/10 focus:bg-gray-200/0 border border-slate-700 text-gray-100 py-2 px-3 pr-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+            <option value="US/Eastern">Eastern</option>
+            <option value="US/Central">Central</option>
+            <option value="US/Mountain">Mountain</option>
+            <option value="US/Pacific">Pacific</option>
+            <option value="US/Hawaii">Hawaii</option>
+          </select>
 
-      <button onClick={createClick}>create</button>
-      <button onClick={readClick}>read</button>
-      <h2>It is {date.toLocaleTimeString()}</h2>
-      <h2>
+          <button onClick={createClick} className="hover:bg-blue-700 text-white py-2 px-4 rounded border border-gray-500">create</button>
+
+        </div>
+      </div>
+      
+      <div className="w-full justify-center flex gap-10 flex-wrap">
         {timeComponents}
-      </h2>
+      </div>
 
     </div>
-  )
+  );
 }
 
 //TIMEZONE COMPONENT
@@ -203,22 +212,45 @@ function Timezone (props) {
   }
 
   return (
-    <div class="timezone">
-      <h2>{props.location}: {time}</h2>
+    <div className="flex flex-col relative gap-5 p-8 rounded-xl bg-slate-400 bg-opacity-20">
+      
+      <h2 className="font-mono text-white text-xl font-semibold">{props.location}: {time}</h2>
       <ul>
         {teamComponents}
       </ul>
-      <select name="selectUpdateTime" id={`update${props.id}`}>
-        <option value="US/Eastern">Eastern</option>
-        <option value="US/Central">Central</option>
-        <option value="US/Mountain">Mountain</option>
-        <option value="US/Pacific">Pacific</option>
-        <option value="US/Hawaii">Hawaii</option>
-      </select>
-      <button onClick={event => props.updateClick(event, props.id)}>update</button>
-      <button id={props.id} onClick={event => props.deleteClick(event, props.id)}>delete</button>
-      <input id={`teamInput${props.id}`}></input>
-      <button onClick={event => addTeamClick(event, props.id)}>add</button>
+
+      <div className="flex items-center gap-2">
+
+        <label className="block uppercase tracking-wide text-gray-100 text-xs font-bold mb-1" for="selectUpdateTime">
+          Timezone:
+        </label>
+        <select name="selectUpdateTime" id={`update${props.id}`} className="inline appearance-none bg-gray-200/10 focus:bg-gray-200/0 border border-slate-700 text-gray-100 py-2 px-3 pr-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+          <option value="US/Eastern">Eastern</option>
+          <option value="US/Central">Central</option>
+          <option value="US/Mountain">Mountain</option>
+          <option value="US/Pacific">Pacific</option>
+          <option value="US/Hawaii">Hawaii</option>
+        </select>
+
+        <button onClick={event => props.updateClick(event, props.id)} className="hover:bg-slate-500 text-white py-2 px-4 rounded border border-gray-500">
+          update
+        </button>
+
+        <button id={props.id} onClick={event => props.deleteClick(event, props.id)} className="absolute top-1 right-1  hover:bg-gray-500 text-white font-semibold w-6 h-6 rounded">
+          x
+        </button>
+      </div>
+
+      <div className="w-1/2 flex gap-2 items-center">
+        <input id={`teamInput${props.id}`} className="bg-gray-200/10 appearance-none border-2 focus:bg-gray-200/0 border-slate-700 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none focus:bg-white focus:border-purple-500"></input>
+        
+        <button onClick={event => addTeamClick(event, props.id)} className="hover:bg-slate-400 text-white h-6 w-8 rounded border-slate-700 border-solid border">
+          +
+        </button>
+      </div>
+
+
+
     </div>
   );
 }
@@ -226,9 +258,13 @@ function Timezone (props) {
 //TEAM COMPONENT
 const Team = (props) => {
   return (
-    <li>
-      <span>{props.name}</span>
-      <button onClick={event => props.removeTeamClick(event, props.name)}>-</button>
+    <li className="p-2 ml-2">
+      <span className="font-mono text-white text-md mr-2">{props.name}</span>
+
+      <button onClick={event => props.removeTeamClick(event, props.name)} className="hover:bg-slate-400 text-white h-6 w-6  rounded border-slate-700 border-solid border">
+        -
+      </button>
+      
     </li>
   );
 }
