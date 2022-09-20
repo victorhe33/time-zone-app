@@ -129,7 +129,7 @@ const MiniClock = () => {
           <label className="inline uppercase tracking-wide text-gray-100 text-xs font-bold mb-1" for="selectTime">
             Timezone:
           </label>
-          <select name="selectTime" id="selectTime" className="inline appearance-none bg-gray-200/10 focus:bg-gray-200/0 border border-slate-700 text-gray-100 py-2 px-3 pr-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+          <select name="selectTime" id="selectTime" className="inline appearance-none bg-gray-200/10 focus:bg-gray-200/0 border border-slate-700 text-gray-100 py-2 px-3 pr-4 rounded leading-tight focus:outline-none focus:border-gray-500">
             <option value="US/Eastern">Eastern</option>
             <option value="US/Central">Central</option>
             <option value="US/Mountain">Mountain</option>
@@ -224,7 +224,7 @@ function Timezone (props) {
         <label className="block uppercase tracking-wide text-gray-100 text-xs font-bold mb-1" for="selectUpdateTime">
           Timezone:
         </label>
-        <select name="selectUpdateTime" id={`update${props.id}`} className="inline appearance-none bg-gray-200/10 focus:bg-gray-200/0 border border-slate-700 text-gray-100 py-2 px-3 pr-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+        <select name="selectUpdateTime" id={`update${props.id}`} className="inline appearance-none bg-gray-200/10 focus:bg-gray-200/0 border border-slate-700 text-gray-100 py-2 px-3 pr-4 rounded leading-tight focus:outline-none focus:border-gray-500">
           <option value="US/Eastern">Eastern</option>
           <option value="US/Central">Central</option>
           <option value="US/Mountain">Mountain</option>
@@ -242,7 +242,7 @@ function Timezone (props) {
       </div>
 
       <div className="w-1/2 flex gap-2 items-center">
-        <input id={`teamInput${props.id}`} className="bg-gray-200/10 appearance-none border-2 focus:bg-gray-200/0 border-slate-700 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none focus:bg-white focus:border-purple-500"></input>
+        <input id={`teamInput${props.id}`} className="bg-gray-200/10 appearance-none border-2 focus:bg-gray-200/0 border-slate-700 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none"></input>
         
         <button onClick={event => addTeamClick(event, props.id)} className="hover:bg-slate-400 text-white h-6 w-8 rounded border-slate-700 border-solid border">
           +
