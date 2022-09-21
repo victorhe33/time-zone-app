@@ -24,7 +24,9 @@ const App = () => {
 //MINICLOCK COMPONENT
 const MiniClock = () => {
   const [date, setDate] = useState(new Date());
-  const [timezones, setTimezones] = useState([]);
+  const [timezones, setTimezones] = useState({
+    team: [],
+  });
 
   function tick() {
     setDate(new Date());
@@ -115,8 +117,54 @@ const MiniClock = () => {
   }
 
   for (let i = 0; i < timezones.length; i++) {
-    timeComponents.push(<Timezone date={date} id={timezones[i].id} location={timezones[i].name} key={i} team={timezones[i].team} updateClick={updateClick} deleteClick={deleteClick} />)
+    timeComponents.push(<Timezone date={date} id={timezones[i].id} location={timezones[i].name} key={i} team={timezones[i].team} updateClick={updateClick} deleteClick={deleteClick} addTeamClick={addTeamClick} removeTeamClick={removeTeamClick}/>)
   }
+
+  //TEAM CLICK HANDLERS
+  async function addTeamClick(event, id) {
+    console.log('addTeamClick');
+    const teamInputValue = document.getElementById(`teamInput${id}`).value;
+    const newTeam = [...timezones.team, teamInputValue];
+    const response = await fetch(`./team/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({
+        team: newTeam,
+      })
+    });
+    const data = await response.json();
+    console.log(data);
+
+    setTeam(data.team);
+  }
+
+  async function removeTeamClick(event, name) {
+    console.log('removeTeamClick');
+    const newTeam = [];
+    let once = true;
+    for (let teammate of team) {
+      if (teammate === name && once) {
+        once = false;
+      } else {
+        newTeam.push(teammate);
+      }
+    }
+    const response = await fetch(`./team/${props.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({
+        team: newTeam,
+      })
+    });
+    const data = await response.json();
+    console.log(data);
+
+    setTeam(data.team);
+  } 
 
   return (
     <div className="w-full h-full flex flex-col items-center p-10 gap-10">
@@ -152,60 +200,12 @@ const MiniClock = () => {
 
 //TIMEZONE COMPONENT
 function Timezone (props) {
-  const [team, setTeam] = useState(props.team);
-
   const time = props.date.toLocaleTimeString("en-US", {
     timeZone: props.location,
     timeZoneName: "short",
   });
 
   const teamComponents = [];
-
-  //CLICK HANDERS
-  async function addTeamClick (event, id) {
-    console.log('addTeamClick');
-    const teamInputValue = document.getElementById(`teamInput${id}`).value;
-    const newTeam = [...team, teamInputValue];
-    const response = await fetch(`./team/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stringify({
-        team: newTeam,
-      })
-    });
-    const data = await response.json();
-    console.log(data);
-
-    setTeam(data.team);
-  }
-
-  async function removeTeamClick (event, name) {
-    console.log('removeTeamClick');
-    const newTeam = [];
-    let once = true;
-    for (let teammate of team) {
-      if (teammate === name && once) {
-        once = false;
-      } else {
-        newTeam.push(teammate);
-      }
-    }
-    const response = await fetch(`./team/${props.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stringify({
-        team: newTeam,
-      })
-    });
-    const data = await response.json();
-    console.log(data);
-
-    setTeam(data.team);
-  } 
 
   for (let i = 0; i < team.length; i++) {
     teamComponents.push(<Team name={team[i]} key={`team${i}`} removeTeamClick={removeTeamClick} />)
