@@ -24,9 +24,7 @@ const App = () => {
 //MINICLOCK COMPONENT
 const MiniClock = () => {
   const [date, setDate] = useState(new Date());
-  const [timezones, setTimezones] = useState({
-    team: [],
-  });
+  const [timezones, setTimezones] = useState({});
 
   function tick() {
     setDate(new Date());
@@ -56,12 +54,20 @@ const MiniClock = () => {
   })
   const data = await response.json();
 
-  console.log(data);
-  console.log('timezones', timezones);
-  readClick();
+  const { _id, name, team } = data;
+  const newState = {
+    ...timezones,
+    id: _id,
+    name: name,
+    team: team
   }
 
-  const newTimezones = [];
+  // console.log(data);
+  console.log('newState', newState);
+  setTimezones(newState)
+  }
+
+  const newTimezones = {};
   const timeComponents = [];
 
 
@@ -73,11 +79,11 @@ const MiniClock = () => {
     console.log(data);
 
     data.forEach(document => {
-      newTimezones.push({ 
+      newTimezones[document._id] = { 
         id: document._id,
         name: document.name,
         team: document.team,
-      });
+      };
     });
 
     setTimezones(newTimezones);
@@ -124,46 +130,65 @@ const MiniClock = () => {
   async function addTeamClick(event, id) {
     console.log('addTeamClick');
     const teamInputValue = document.getElementById(`teamInput${id}`).value;
-    const newTeam = [...timezones.team, teamInputValue];
-    const response = await fetch(`./team/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stringify({
-        team: newTeam,
-      })
-    });
-    const data = await response.json();
-    console.log(data);
+    console.log('timezones', ...timezones);
+    const currTeam = timezones.filter(timezone => timezone.id === id);
+    const remainTeam = timezones.filter(timezone => timezone.id !== id)
+    console.log('id', id);
+    console.log('currTeam', currTeam)
+    console.log('remainTeam', remainTeam)
+    const newTeam = {
+      ...currTeam[0],
+      team: [...currTeam[0].team, teamInputValue]
+    }
+    console.log('newTeam', newTeam);
+    const newState = [
+      ...remainTeam,
+      newTeam,
+    ]
+    console.log('newState', newState)
+    setTimezones(newState);
+  
+    // const newTeam = [timezones.team, teamInputValue];
+    // setTimezones([newTeam]);
+    // const response = await fetch(`./team/${id}`, {
+    //   method: 'PATCH',
+    //   headers: {
+    //     'Content-type': 'application/json; charset=UTF-8',
+    //   },
+    //   body: JSON.stringify({
+    //     team: newTeam,
+    //   })
+    // });
+    // const data = await response.json();
+    // console.log(data);
 
-    setTeam(data.team);
+    
   }
 
   async function removeTeamClick(event, name) {
-    console.log('removeTeamClick');
-    const newTeam = [];
-    let once = true;
-    for (let teammate of team) {
-      if (teammate === name && once) {
-        once = false;
-      } else {
-        newTeam.push(teammate);
-      }
-    }
-    const response = await fetch(`./team/${props.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stringify({
-        team: newTeam,
-      })
-    });
-    const data = await response.json();
-    console.log(data);
+    // console.log('removeTeamClick');
+    // const newTeam = [];
+    // let once = true;
+    // for (let teammate of team) {
+    //   if (teammate === name && once) {
+    //     once = false;
+    //   } else {
+    //     newTeam.push(teammate);
+    //   }
+    // }
+    // const response = await fetch(`./team/${props.id}`, {
+    //   method: 'PATCH',
+    //   headers: {
+    //     'Content-type': 'application/json; charset=UTF-8',
+    //   },
+    //   body: JSON.stringify({
+    //     team: newTeam,
+    //   })
+    // });
+    // const data = await response.json();
+    // console.log(data);
 
-    setTeam(data.team);
+    // setTeam(data.team);
   } 
 
   return (
@@ -207,8 +232,8 @@ function Timezone (props) {
 
   const teamComponents = [];
 
-  for (let i = 0; i < team.length; i++) {
-    teamComponents.push(<Team name={team[i]} key={`team${i}`} removeTeamClick={removeTeamClick} />)
+  for (let i = 0; i < props.team.length; i++) {
+    teamComponents.push(<Team name={props.team[i]} key={`team${i}`} removeTeamClick={props.removeTeamClick} />)
   }
 
   return (
@@ -244,7 +269,7 @@ function Timezone (props) {
       <div className="w-1/2 flex gap-2 items-center">
         <input id={`teamInput${props.id}`} className="bg-gray-200/10 appearance-none border-2 focus:bg-gray-200/0 border-slate-700 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none"></input>
         
-        <button onClick={event => addTeamClick(event, props.id)} className="hover:bg-slate-400 text-white h-6 w-8 rounded border-slate-700 border-solid border">
+        <button onClick={event => props.addTeamClick(event, props.id)} className="hover:bg-slate-400 text-white h-6 w-8 rounded border-slate-700 border-solid border">
           +
         </button>
       </div>
