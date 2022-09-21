@@ -124,6 +124,7 @@ const MiniClock = () => {
   async function addTeamClick(event, id) {
     console.log('addTeamClick')
     const teamInputValue = document.getElementById(`teamInput${id}`).value;
+    if (teamInputValue === "") return;
     const currTeam = timezones.filter(timezone => timezone.id === id);
     const remainTeam = timezones.filter(timezone => timezone.id !== id)
 
@@ -151,6 +152,8 @@ const MiniClock = () => {
 
     console.log('addTeam data', data)
     // setTimezones(newState);
+    //clear inputvalue after submit
+    document.getElementById(`teamInput${id}`).value = "";
     readClick();
   }
 
