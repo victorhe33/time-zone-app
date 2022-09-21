@@ -70,7 +70,7 @@ const MiniClock = () => {
     console.log('readClick');
     const response = await fetch('./api/')
     const data = await response.json();
-    console.log(data);
+    console.log('ReadClick', data);
 
     data.forEach(document => {
       newTimezones.push({ 
@@ -97,7 +97,7 @@ const MiniClock = () => {
       })
     });
     const data = await response.json();
-    console.log(data);
+    console.log('updateCLick data', data);
     readClick();
   }
   
@@ -112,7 +112,7 @@ const MiniClock = () => {
       }
     })
     const data = await response.json();
-    console.log(data);
+    console.log('deleteClick data', data);
     readClick();
   }
 
@@ -122,6 +122,7 @@ const MiniClock = () => {
 
   //TEAM CLICK HANDLERS
   async function addTeamClick(event, id) {
+    console.log('addTeamClick')
     const teamInputValue = document.getElementById(`teamInput${id}`).value;
     const currTeam = timezones.filter(timezone => timezone.id === id);
     const remainTeam = timezones.filter(timezone => timezone.id !== id)
@@ -147,13 +148,15 @@ const MiniClock = () => {
       ...remainTeam,
       newTeam,
     ]
+
+    console.log('addTeam data', data)
     // setTimezones(newState);
     readClick();
   }
 
   async function removeTeamClick(event, name, id) {
     console.log('removeTeamClick');
-    console.log('name removed +id', name, id);
+    // console.log('name removed +id', name, id);
 
     const remainTimezone = timezones.filter(timezone => timezone.id !== id)
     const currTimezone = timezones.filter(timezone => timezone.id === id);
@@ -260,7 +263,7 @@ function Timezone (props) {
       </div>
 
       <div className="w-1/2 flex gap-2 items-center">
-        <input id={`teamInput${props.id}`} className="bg-gray-200/10 appearance-none border-2 focus:bg-gray-200/0 border-slate-700 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none"></input>
+        <input id={`teamInput${props.id}`} placeholder="name" className="bg-gray-200/10 appearance-none border-2 focus:bg-gray-200/0 border-slate-700 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none"></input>
         
         <button onClick={event => props.addTeamClick(event, props.id)} className="hover:bg-slate-400 text-white h-6 w-8 rounded border-slate-700 border-solid border">
           +
