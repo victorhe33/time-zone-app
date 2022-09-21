@@ -147,20 +147,13 @@ const MiniClock = () => {
       ...remainTeam,
       newTeam,
     ]
-    setTimezones(newState);
+    // setTimezones(newState);
+    readClick();
   }
 
   async function removeTeamClick(event, name, id) {
     console.log('removeTeamClick');
-    // const newTeam = [];
-    // let once = true;
-    // for (let teammate of team) {
-    //   if (teammate === name && once) {
-    //     once = false;
-    //   } else {
-    //     newTeam.push(teammate);
-    //   }
-    // }
+    console.log('name removed +id', name, id);
 
     const remainTimezone = timezones.filter(timezone => timezone.id !== id)
     const currTimezone = timezones.filter(timezone => timezone.id === id);
@@ -187,7 +180,8 @@ const MiniClock = () => {
     const data = await response.json();
     console.log('removeTeam data', data);
 
-    setTimezones([...remainTimezone, data]);
+    // setTimezones([...remainTimezone, data]);
+    readClick();
   } 
 
   return (
