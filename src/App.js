@@ -24,7 +24,9 @@ const App = () => {
 //MINICLOCK COMPONENT
 const MiniClock = () => {
   const [date, setDate] = useState(new Date());
-  const [timezones, setTimezones] = useState({});
+  const [timezones, setTimezones] = useState({
+    team: [],
+  });
 
   function tick() {
     setDate(new Date());
@@ -54,20 +56,12 @@ const MiniClock = () => {
   })
   const data = await response.json();
 
-  const { _id, name, team } = data;
-  const newState = {
-    ...timezones,
-    id: _id,
-    name: name,
-    team: team
+  console.log(data);
+  console.log('timezones', timezones);
+  readClick();
   }
 
-  // console.log(data);
-  console.log('newState', newState);
-  setTimezones(newState)
-  }
-
-  const newTimezones = {};
+  const newTimezones = [];
   const timeComponents = [];
 
 
@@ -79,11 +73,11 @@ const MiniClock = () => {
     console.log(data);
 
     data.forEach(document => {
-      newTimezones[document._id] = { 
+      newTimezones.push({ 
         id: document._id,
         name: document.name,
         team: document.team,
-      };
+      });
     });
 
     setTimezones(newTimezones);
@@ -128,45 +122,36 @@ const MiniClock = () => {
 
   //TEAM CLICK HANDLERS
   async function addTeamClick(event, id) {
-    console.log('addTeamClick');
     const teamInputValue = document.getElementById(`teamInput${id}`).value;
-    console.log('timezones', ...timezones);
     const currTeam = timezones.filter(timezone => timezone.id === id);
     const remainTeam = timezones.filter(timezone => timezone.id !== id)
-    console.log('id', id);
-    console.log('currTeam', currTeam)
-    console.log('remainTeam', remainTeam)
+
+    // const newTeam = [timezones.team, teamInputValue];
+    // setTimezones([newTeam]);
+    const response = await fetch(`./team/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({
+        team: [...currTeam[0].team, teamInputValue],
+      })
+    });
+    const data = await response.json();
+
     const newTeam = {
       ...currTeam[0],
-      team: [...currTeam[0].team, teamInputValue]
+      team: data.team,
     }
-    console.log('newTeam', newTeam);
     const newState = [
       ...remainTeam,
       newTeam,
     ]
-    console.log('newState', newState)
     setTimezones(newState);
-  
-    // const newTeam = [timezones.team, teamInputValue];
-    // setTimezones([newTeam]);
-    // const response = await fetch(`./team/${id}`, {
-    //   method: 'PATCH',
-    //   headers: {
-    //     'Content-type': 'application/json; charset=UTF-8',
-    //   },
-    //   body: JSON.stringify({
-    //     team: newTeam,
-    //   })
-    // });
-    // const data = await response.json();
-    // console.log(data);
-
-    
   }
 
-  async function removeTeamClick(event, name) {
-    // console.log('removeTeamClick');
+  async function removeTeamClick(event, name, id) {
+    console.log('removeTeamClick');
     // const newTeam = [];
     // let once = true;
     // for (let teammate of team) {
@@ -176,19 +161,33 @@ const MiniClock = () => {
     //     newTeam.push(teammate);
     //   }
     // }
-    // const response = await fetch(`./team/${props.id}`, {
-    //   method: 'PATCH',
-    //   headers: {
-    //     'Content-type': 'application/json; charset=UTF-8',
-    //   },
-    //   body: JSON.stringify({
-    //     team: newTeam,
-    //   })
-    // });
-    // const data = await response.json();
-    // console.log(data);
 
-    // setTeam(data.team);
+    const remainTimezone = timezones.filter(timezone => timezone.id !== id)
+    const currTimezone = timezones.filter(timezone => timezone.id === id);
+    const currTeam = [...currTimezone[0].team]
+    const newTeam = [];
+    let once = true;
+    for (let teammate of currTeam) {
+      if (teammate === name && once) {
+        once = false;
+      } else {
+        newTeam.push(teammate);
+      }
+    }
+
+    const response = await fetch(`./team/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({
+        team: newTeam,
+      })
+    });
+    const data = await response.json();
+    console.log('removeTeam data', data);
+
+    setTimezones([...remainTimezone, data]);
   } 
 
   return (
@@ -233,7 +232,7 @@ function Timezone (props) {
   const teamComponents = [];
 
   for (let i = 0; i < props.team.length; i++) {
-    teamComponents.push(<Team name={props.team[i]} key={`team${i}`} removeTeamClick={props.removeTeamClick} />)
+    teamComponents.push(<Team name={props.team[i]} key={`team${i}`} removeTeamClick={props.removeTeamClick} id={props.id}/>)
   }
 
   return (
@@ -286,7 +285,7 @@ const Team = (props) => {
     <li className="p-2 ml-2">
       <span className="font-mono text-white text-md mr-2">{props.name}</span>
 
-      <button onClick={event => props.removeTeamClick(event, props.name)} className="hover:bg-slate-400 text-white h-6 w-6  rounded border-slate-700 border-solid border">
+      <button onClick={event => props.removeTeamClick(event, props.name, props.id)} className="hover:bg-slate-400 text-white h-6 w-6  rounded border-slate-700 border-solid border">
         -
       </button>
       
