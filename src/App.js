@@ -14,9 +14,39 @@ dayjs.tz.setDefault("America/New_York");
 
 //REACT COMPONENTS
 const App = () => {
+  const [status, changeStatus] = useState(false);
+  console.log('status', status);
+
+  function logging() {
+    changeStatus(true);
+  }
+
+  //CONDITIONAL RENDER: LOGIN PAGE
+  if (!status) {
+    return (
+      <>
+        <Login logging={logging}/>
+      </>
+    );
+  };
+
+  //CONDITIONAL RENDER: CONTENT PAGE
+  if (status) {
+    return (
+      <div className="h-full w-full flex bg-[url('./earth.jpg')] bg-cover">
+        <MiniClock/>
+      </div>
+    );
+  };
+}
+
+//LOGIN COMPONENT
+const Login = (props) => {
   return (
-    <div className="h-full w-full flex bg-[url('./earth.jpg')] bg-cover">
-      <MiniClock/>
+    <div className="h-screen flex justify-center items-center bg-[url('./earth1.jpg')] bg-cover">
+      <button onClick={event => props.logging(event)} className=" bg-slate-600 hover:bg-blue-700 text-white py-2 px-4 rounded border border-gray-500">
+        hello world
+      </button>
     </div>
   );
 }
@@ -198,7 +228,7 @@ const MiniClock = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="inline uppercase tracking-wide text-gray-100 text-xs font-bold mb-1" for="selectTime">
+          <label className="inline uppercase tracking-wide text-gray-100 text-xs font-bold" for="selectTime">
             Timezone:
           </label>
           <select name="selectTime" id="selectTime" className="inline appearance-none bg-gray-200/10 focus:bg-gray-200/0 border border-slate-700 text-gray-100 py-2 px-3 pr-4 rounded leading-tight focus:outline-none focus:border-gray-500">
@@ -239,13 +269,9 @@ function Timezone (props) {
     <div className="flex flex-col relative gap-5 p-8 rounded-xl bg-slate-400 bg-opacity-20">
       
       <h2 className="font-mono text-white text-xl font-semibold">{props.location}: {time}</h2>
-      <ul>
-        {teamComponents}
-      </ul>
 
-      <div className="flex items-center gap-2">
-
-        <label className="block uppercase tracking-wide text-gray-100 text-xs font-bold mb-1" for="selectUpdateTime">
+      <div className="flex items-center gap-2 ml-4">
+        <label className="block uppercase tracking-wide text-gray-100 text-xs font-bold" for="selectUpdateTime">
           Timezone:
         </label>
         <select name="selectUpdateTime" id={`update${props.id}`} className="inline appearance-none bg-gray-200/10 focus:bg-gray-200/0 border border-slate-700 text-gray-100 py-2 px-3 pr-4 rounded leading-tight focus:outline-none focus:border-gray-500">
@@ -265,15 +291,18 @@ function Timezone (props) {
         </button>
       </div>
 
-      <div className="w-1/2 flex gap-2 items-center">
+      <ul>
+        {teamComponents}
+      </ul>
+
+
+      <div className="w-1/2 flex gap-2 items-center ml-4">
         <input id={`teamInput${props.id}`} placeholder="name" className="bg-gray-200/10 appearance-none border-2 focus:bg-gray-200/0 border-slate-700 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none"></input>
         
         <button onClick={event => props.addTeamClick(event, props.id)} className="hover:bg-slate-400 text-white h-6 w-8 rounded border-slate-700 border-solid border">
           +
         </button>
       </div>
-
-
 
     </div>
   );
