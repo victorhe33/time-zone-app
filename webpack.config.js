@@ -35,7 +35,8 @@ module.exports = {
     },
     proxy: {
       "/api/": 'http://localhost:3000',
-      "/team/": 'http://localhost:3000'
+      "/team/": 'http://localhost:3000',
+      "/login/": 'http://localhost:3000',
     },
     historyApiFallback: true,
   },

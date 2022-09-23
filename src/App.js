@@ -33,8 +33,8 @@ const App = () => {
 
   return (
       <>
-        <h1><Link to="/">Welcome</Link></h1>
-        <h1><Link to="/timezone">Hello, React Router!</Link></h1>
+        {/* <h1><Link to="/">Welcome</Link></h1>
+        <h1><Link to="/timezone">Hello, React Router!</Link></h1> */}
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/error" element={<Error />} />
