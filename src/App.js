@@ -1,5 +1,13 @@
 import './App.css';
+import Login from './Login';
+import Error from './Error';
 import React, { useEffect, useState } from 'react';
+import {
+  Link,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom';
 
 //DAYJS
 const dayjs = require('dayjs')
@@ -17,38 +25,45 @@ const App = () => {
   const [status, changeStatus] = useState(false);
   console.log('status', status);
 
-  function logging() {
-    changeStatus(true);
-  }
 
-  //CONDITIONAL RENDER: LOGIN PAGE
-  if (!status) {
-    return (
-      <>
-        <Login logging={logging}/>
-      </>
-    );
-  };
+  //DEPRECIATED LOGGING FUNCTION 2/2 ROUTER
+  // function logging() {
+  //   changeStatus(true);
+  // }
 
-  //CONDITIONAL RENDER: CONTENT PAGE
-  if (status) {
-    return (
-      <div className="h-full w-full flex bg-[url('./earth.jpg')] bg-cover">
-        <MiniClock/>
-      </div>
-    );
-  };
-}
-
-//LOGIN COMPONENT
-const Login = (props) => {
   return (
-    <div className="h-screen flex justify-center items-center bg-[url('./earth1.jpg')] bg-cover">
-      <button onClick={event => props.logging(event)} className=" bg-slate-600 hover:bg-blue-700 text-white py-2 px-4 rounded border border-gray-500">
-        hello world
-      </button>
-    </div>
+      <>
+        <h1><Link to="/">Welcome</Link></h1>
+        <h1><Link to="/timezone">Hello, React Router!</Link></h1>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/error" element={<Error />} />
+          <Route path="/timezone" element={
+            <div className = "h-full w-full flex bg-[url('./earth.jpg')] bg-cover">
+              <MiniClock/>
+            </div>
+          }/>
+        </Routes>
+      </>
   );
+
+//   //CONDITIONAL RENDER: LOGIN PAGE DEPRECIATED 2/2 ROUTER
+//   if (!status) {
+//     return (
+//       <>
+//         <Login logging={logging}/>
+//       </>
+//     );
+//   };
+
+//   //CONDITIONAL RENDER: CONTENT PAGE DEPRECIATED 2/2 ROUTER
+//   if (status) {
+//     return (
+//       <div className="h-full w-full flex bg-[url('./earth.jpg')] bg-cover">
+//         <MiniClock/>
+//       </div>
+//     );
+//   };
 }
 
 //MINICLOCK COMPONENT
@@ -57,6 +72,8 @@ const MiniClock = () => {
   const [timezones, setTimezones] = useState({
     team: [],
   });
+
+  const navigate = useNavigate();
 
   function tick() {
     setDate(new Date());
@@ -221,7 +238,7 @@ const MiniClock = () => {
   } 
 
   return (
-    <div className="w-full h-full flex flex-col items-center p-10 gap-10">
+    <div className="relative w-full h-full flex flex-col items-center p-10 gap-10">
       <div className="min-w-fit flex flex-col items-center gap-5 border-solid border border-gray-800 p-10 rounded-xl bg-slate-400 bg-opacity-20">
         <div>
           <h1 className="text-primary text-6xl font-mono font-semibold">{date.toLocaleTimeString()}</h1>
@@ -247,6 +264,7 @@ const MiniClock = () => {
       <div className="w-full justify-center flex gap-10 flex-wrap">
         {timeComponents}
       </div>
+      <button onClick={() => navigate('/')} className="absolute right-10 hover:bg-red-700 text-white py-2 px-4 rounded border border-gray-500">Logout</button>
 
     </div>
   );
