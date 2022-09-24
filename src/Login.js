@@ -23,12 +23,12 @@ const Login = (props) => {
                 <Form onSubmit={handleSubmit} />
               </div>
 
-              <button onClick={event => navigate("/timezone")} className=" bg-slate-600 hover:bg-blue-700 text-white py-2 px-4 rounded border border-gray-500">
+              {/* <button onClick={event => navigate("/timezone")} className=" bg-slate-600 hover:bg-blue-700 text-white py-2 px-4 rounded border border-gray-500">
                 right
               </button>
               <button onClick={event => navigate("/error")} className=" bg-slate-600 hover:bg-blue-700 text-white py-2 px-4 rounded border border-gray-500">
                 wrong
-              </button>
+              </button> */}
 
           </div>
         </div>
@@ -56,6 +56,29 @@ const Form = ({ onSubmit }) => {
       password: passwordRef.current.value
     };
     const response = await fetch('./login/', {
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    })
+    const validation = await response.json();
+    console.log(validation.status)
+    if (validation.status) {
+      navigate("/timezone")
+    } else {
+      navigate('/error')
+    }
+  };
+  //login auth click handler
+  const createUserHandler = async e => {
+    e.preventDefault();
+    const data = {
+      username: usernameRef.current.value,
+      password: passwordRef.current.value
+    };
+    const response = await fetch('./login/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -64,14 +87,13 @@ const Form = ({ onSubmit }) => {
       body: JSON.stringify(data),
     })
     const validation = await response.json();
-    console.log(validation)
-    if (validation) {
+    console.log(validation.status)
+    if (validation.status) {
       navigate("/timezone")
     } else {
       navigate('/error')
     }
-
-  };
+  }
   
   return (
     
@@ -79,9 +101,12 @@ const Form = ({ onSubmit }) => {
       <Field ref={usernameRef} label="Username:" type="text" className="" />
 
       <Field ref={passwordRef} label="Password:" type="password" className="" />
-      <div className="w-full flex justify-center mt-4">
+      <div className="w-full flex justify-center mt-4 gap-4">
         <button type="submit" className="bg-slate-600 hover:bg-blue-700 text-white py-2 px-4 rounded border border-gray-500">
-          Submit
+          Login
+        </button>
+        <button type="button" onClick={event => createUserHandler(event)} className=" bg-slate-600 hover:bg-blue-700 text-white py-2 px-4 rounded border border-gray-500">
+          Create
         </button>
       </div>
     </form>

@@ -5,10 +5,16 @@ const loginController = require("../controllers/loginController.js");
 
 const loginRouter = express.Router();
 
-//UPDATE
-loginRouter.post('/', loginController.checkUser, (req, res) => {
+//CREATE
+loginRouter.post('/', loginController.createUser, (req, res) => {
   // console.log(req.body);
-  res.status(200).json(res.locals.status);
+  res.status(200).json(res.locals);
+});
+
+//READ
+loginRouter.patch('/', loginController.verifyUser, (req, res) => {
+  // console.log(req.body);
+  res.status(200).json(res.locals);
 });
 
 module.exports = loginRouter;
