@@ -19,6 +19,7 @@ loginController.createUser = async (req, res, next) => {
 
   const newUser = await User.create(req.body);
   // const id = await jwt.sign({ username }, process.env.SECRET_SESSION);
+  res.cookie('createdUser', 1, { maxAge: 900000, httpOnly: true })
   res.locals.status = newUser;
   // console.log('jwt: ', id);
   return next();
@@ -33,6 +34,7 @@ loginController.verifyUser = async (req, res, next) => {
     const isValidPW = await bcrypt.compare(req.body.password, userpwd);
     console.log('isValid', isValidPW);
     res.locals.status = isValidPW;
+    res.cookie('validUser', 1, { maxAge: 900000, httpOnly: true })
     return next();
   }
   return next();

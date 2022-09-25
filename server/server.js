@@ -4,6 +4,7 @@ const port = 3000;
 const path = require('path');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser')
 
 
 const apiRouter = require('./routes/api');
@@ -21,9 +22,10 @@ mongoose.connect(URI, {
 //REQ BODY PARSER
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
-  res.send('{"hello": "Hello World!"}').json();
+  res.status(401).send('{"hello": "Hello World!"}').json();
 })
 
 //API ROUTE HANDLER
@@ -38,7 +40,7 @@ app.use('/login', loginRouter);
 //Catch-all route handler for requests to unknown paths.
 app.use((req, res) => {
   console.log('unknown path');
-  res.status(404).send('This is not the page you\'re looking for...')
+  return res.status(404).send('This is not the page you\'re looking for...')
 });
 
 /*
