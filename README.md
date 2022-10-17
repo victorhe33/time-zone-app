@@ -6,8 +6,8 @@
 
 # Screenshots
 ![Screen Shot 2022-09-24 at 6 30 49 PM](https://user-images.githubusercontent.com/94798862/196217656-a4c256df-ec97-45c1-8233-5922fe3b1423.png)
-![Screen Shot 2022-09-24 at 6 31 27 PM](https://user-images.githubusercontent.com/94798862/196217666-db527b0a-1971-4d72-a554-c5bd3e99a695.png)
 ![Screen Shot 2022-09-24 at 6 31 39 PM](https://user-images.githubusercontent.com/94798862/196217671-531bf75d-f6cc-4fe9-b851-8d7f7c6be7ef.png)
+![Screen Shot 2022-09-24 at 6 31 27 PM](https://user-images.githubusercontent.com/94798862/196217666-db527b0a-1971-4d72-a554-c5bd3e99a695.png)
 
 # Demo!
 
