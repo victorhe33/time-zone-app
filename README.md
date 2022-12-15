@@ -2,7 +2,7 @@
 
 ## Technologies:
 
-- MongoDB, Express/Node, React, Tailwind
+- MongoDB, Express/Node, React, Tailwind, Webpack
 
 ![Screen Shot 2022-09-14 at 8 52 19 PM](https://user-images.githubusercontent.com/94798862/190293687-49229de8-7fb5-4f83-a550-e0db0653504d.png)
 
